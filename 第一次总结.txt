@@ -1,0 +1,43 @@
+
+  项目完成情况
+
+  已完成的核心功能：
+
+  1. 项目初始化 - Next.js 16 + TypeScript + Tailwind CSS v4
+  2. 数据库设计 - 7 张表的 SQL 迁移文件（需手动执行）
+  3. 认证系统 - 登录/注册页面 + Supabase Auth 集成
+  4. Markdown 编辑器 - 基础分栏编辑器（可升级为 ByteMD）
+  5. 文件上传 API - COS 临时凭证 + 文件记录
+  6. 文章 CRUD - 创建/编辑/删除/发布
+  7. 短链分享 - /s/{shortCode} 访问
+  8. 用户空间 - /u/{username} 个人主页
+  9. Dashboard - 文章管理 + 存储统计
+
+  下一步操作
+
+  1. 执行数据库迁移（必须）
+
+  在 Supabase Dashboard SQL Editor 中依次执行：
+  - supabase/migrations/001_create_mdshare_tables.sql
+  - supabase/migrations/002_create_rls_policies.sql
+
+  2. 配置环境变量
+
+  复制 .env.local.example 为 .env.local 并填入：
+  NEXT_PUBLIC_SUPABASE_URL=你的Supabase URL
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=你的Supabase Anon Key
+  COS_SECRETID=你的COS SecretId
+  COS_SECRETKEY=你的COS SecretKey
+  COS_BUCKET_NAME=你的存储桶名称
+  COS_APPID=你的AppId
+
+  3. 启动开发服务器
+  npm run dev
+
+  待后续实现的功能
+
+  - 版本历史与回滚
+  - 评论系统
+  - 导入导出（PDF/HTML/ZIP）
+  - 主题切换（明暗模式）
+  - ByteMD 完整集成（需安装 @bytemd/react 等包）
