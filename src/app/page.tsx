@@ -1,6 +1,15 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // 已登录用户直接跳转到控制台
+  if (user) {
+    redirect('/dashboard')
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-white">
       <div className="max-w-2xl text-center">
