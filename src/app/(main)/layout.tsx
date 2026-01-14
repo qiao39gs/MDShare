@@ -24,6 +24,9 @@ export default async function MainLayout({
               <Link href="/editor/new" className="text-slate-500 hover:text-slate-900 transition-colors">
                 新建文章
               </Link>
+              <Link href="/storage" className="text-slate-500 hover:text-slate-900 transition-colors">
+                存储空间
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-4">
