@@ -7,20 +7,20 @@ export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 获取用户文章
-  const { data: posts } = await supabase
-    .from('mdshare_posts')
-    .select('*')
-    .eq('user_id', user?.id)
-    .is('deleted_at', null)
-    .order('updated_at', { ascending: false })
-
-  // 获取用户资料
-  const { data: profile } = await supabase
-    .from('mdshare_profiles')
-    .select('*')
-    .eq('id', user?.id)
-    .single()
+  // 并行获取文章和用户资料
+  const [{ data: posts }, { data: profile }] = await Promise.all([
+    supabase
+      .from('mdshare_posts')
+      .select('id, title, status, short_code, updated_at, view_count, is_pinned')
+      .eq('user_id', user?.id)
+      .is('deleted_at', null)
+      .order('updated_at', { ascending: false }),
+    supabase
+      .from('mdshare_profiles')
+      .select('id, username, display_name, storage_used, storage_limit')
+      .eq('id', user?.id)
+      .single(),
+  ])
 
   const formatDate = (date: string) => {
     return formatDistanceToNow(new Date(date), { addSuffix: true, locale: zhCN })

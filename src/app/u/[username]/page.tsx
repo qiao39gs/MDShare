@@ -15,7 +15,7 @@ export default async function UserPage({ params }: PageProps) {
   // 获取用户资料
   const { data: profile, error: profileError } = await supabase
     .from('mdshare_profiles')
-    .select('*')
+    .select('id, username, display_name, avatar_url, bio')
     .eq('username', username)
     .single()
 
@@ -26,7 +26,7 @@ export default async function UserPage({ params }: PageProps) {
   // 获取用户公开文章
   const { data: posts } = await supabase
     .from('mdshare_posts')
-    .select('*')
+    .select('id, title, content, short_code, created_at, view_count, is_pinned')
     .eq('user_id', profile.id)
     .eq('status', 'published')
     .eq('access_type', 'public')
