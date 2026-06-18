@@ -74,7 +74,7 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
 
       <style jsx global>{`
         .bytemd-container .bytemd {
-          height: calc(100vh - 180px);
+          height: calc(100vh - 3.5rem - 160px);
           min-height: 500px;
           border-radius: 0.75rem;
           border: 1px solid #e2e8f0;
