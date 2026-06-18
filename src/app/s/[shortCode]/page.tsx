@@ -57,7 +57,8 @@ export default async function SharePage({ params }: PageProps) {
       .order('created_at', { ascending: false }),
   ])
 
-  const profile = post.mdshare_profiles as { username: string; display_name: string | null; avatar_url: string | null } | null
+  const profileRaw = Array.isArray(post.mdshare_profiles) ? post.mdshare_profiles[0] : post.mdshare_profiles
+  const profile = profileRaw as { username: string; display_name: string | null; avatar_url: string | null } | null
 
   return (
     <div className="min-h-screen bg-white">
