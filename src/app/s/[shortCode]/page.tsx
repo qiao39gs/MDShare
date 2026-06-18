@@ -16,12 +16,8 @@ export default async function SharePage({ params }: PageProps) {
   const { data: post, error } = await supabase
     .from('mdshare_posts')
     .select(`
-      *,
-      mdshare_profiles (
-        username,
-        display_name,
-        avatar_url
-      )
+      id, title, content, created_at, view_count, expires_at,
+      mdshare_profiles (username, display_name, avatar_url)
     `)
     .eq('short_code', shortCode)
     .eq('status', 'published')
@@ -43,30 +39,23 @@ export default async function SharePage({ params }: PageProps) {
     )
   }
 
-  // 记录访问日志
   const headersList = await headers()
-  const userAgent = headersList.get('user-agent') || ''
-  const referer = headersList.get('referer') || ''
 
-  await supabase.from('mdshare_access_logs').insert({
-    post_id: post.id,
-    user_agent: userAgent,
-    referer: referer,
-  })
-
-  // 更新浏览次数
-  await supabase
-    .from('mdshare_posts')
-    .update({ view_count: (post.view_count || 0) + 1 })
-    .eq('id', post.id)
-
-  // 获取评论
-  const { data: comments } = await supabase
-    .from('mdshare_comments')
-    .select('id, guest_name, content, created_at')
-    .eq('post_id', post.id)
-    .eq('is_approved', true)
-    .order('created_at', { ascending: false })
+  // 并行执行：记录访问日志 + 原子递增浏览次数 + 获取评论
+  const [, , { data: comments }] = await Promise.all([
+    supabase.from('mdshare_access_logs').insert({
+      post_id: post.id,
+      user_agent: headersList.get('user-agent') || '',
+      referer: headersList.get('referer') || '',
+    }),
+    supabase.rpc('increment_post_view_count', { p_post_id: post.id }),
+    supabase
+      .from('mdshare_comments')
+      .select('id, guest_name, content, created_at')
+      .eq('post_id', post.id)
+      .eq('is_approved', true)
+      .order('created_at', { ascending: false }),
+  ])
 
   const profile = post.mdshare_profiles as { username: string; display_name: string | null; avatar_url: string | null } | null
 
