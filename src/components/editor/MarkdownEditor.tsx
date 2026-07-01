@@ -66,7 +66,7 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
       />
 
       {/* 上传提示 */}
-      <div className="mt-3 text-sm text-gray-500 flex items-center gap-4">
+      <div className="mt-6 text-xs text-gray-400 flex flex-wrap items-center gap-x-4 gap-y-1">
         <span>支持粘贴或拖拽图片上传</span>
         <span>最大 10MB</span>
         <span>支持 JPG、PNG、GIF、WebP</span>
