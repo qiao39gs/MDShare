@@ -103,6 +103,7 @@ export default async function DashboardPage() {
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/editor/${post.id}`}
+                        prefetch={false}
                         className="font-medium text-slate-900 hover:text-blue-500 truncate"
                       >
                         {post.title || '无标题'}
@@ -116,19 +117,21 @@ export default async function DashboardPage() {
                       <span>更新于 {formatDate(post.updated_at)}</span>
                       <span>{post.view_count} 次浏览</span>
                       {post.status === 'published' && (
-                        <Link
+                        <a
                           href={`/s/${post.short_code}`}
                           className="text-blue-500 hover:underline"
                           target="_blank"
+                          rel="noopener noreferrer"
                         >
                           查看
-                        </Link>
+                        </a>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2 ml-4">
                     <Link
                       href={`/editor/${post.id}`}
+                      prefetch={false}
                       className="px-3 py-1 text-sm border border-slate-200 rounded-md hover:bg-slate-50 transition-colors"
                     >
                       编辑

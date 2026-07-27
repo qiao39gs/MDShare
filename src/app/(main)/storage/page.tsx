@@ -195,6 +195,7 @@ export default function StoragePage() {
                       {file.post && (
                         <Link
                           href={`/editor/${file.post.id}`}
+                          prefetch={false}
                           className="text-sm text-blue-500 hover:underline mt-1 inline-block"
                         >
                           关联文章: {file.post.title || '无标题'}
